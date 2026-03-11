@@ -5,6 +5,8 @@ import com.senai.conta_bancaria.domain.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 //@servic avisa o spring que ele vai controlar
 @Service
 public class UsuarioService {
@@ -15,5 +17,9 @@ public class UsuarioService {
     public Usuario cadastrarUsuario(Usuario usuario) {
 
         return usuarioRepository.save(usuario);
+    }
+
+    public List<Usuario> listarUsuarios() {
+        return usuarioRepository.findAll();
     }
 }
