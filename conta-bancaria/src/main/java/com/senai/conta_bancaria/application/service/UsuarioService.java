@@ -11,6 +11,7 @@ import java.util.List;
 @Service
 public class UsuarioService {
 
+
     @Autowired
     UsuarioRepository usuarioRepository;
 
@@ -22,4 +23,24 @@ public class UsuarioService {
     public List<Usuario> listarUsuarios() {
         return usuarioRepository.findAll();
     }
+        public Usuario buscarUsuarioPorId(Long id){
+            return usuarioRepository.findById(id).get();
+
+    }
+
+    public Usuario editarUsuario(Long id, Usuario usuario){
+        Usuario usuarioEditado = buscarUsuarioPorId(id);
+        if (usuarioEditado != null){
+            usuarioEditado.setNome(usuario.getNome());
+            usuarioEditado.setEmail(usuario.getEmail());
+            usuarioEditado.setSenha(usuario.getSenha());
+            return usuarioRepository.save(usuarioEditado);
+        }
+        return null;
+    }
+
+    public void apagarUsuario(Long id){
+        usuarioRepository.deleteById(id);
+    }
+
 }
