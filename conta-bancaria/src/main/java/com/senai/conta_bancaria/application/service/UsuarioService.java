@@ -3,13 +3,14 @@ package com.senai.conta_bancaria.application.service;
 import com.senai.conta_bancaria.application.dto.UsuarioRequestDTO;
 import com.senai.conta_bancaria.application.dto.UsuarioResponseDTO;
 import com.senai.conta_bancaria.domain.entity.Usuario;
+import com.senai.conta_bancaria.domain.exception.UsuarioNaoEncontradoException;
 import com.senai.conta_bancaria.domain.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-//@servic avisa o spring que ele vai controlar
+//@service avisa o spring que ele vai controlar
 @Service
 public class UsuarioService {
 
@@ -30,22 +31,24 @@ public class UsuarioService {
                 ).toList();
     }
        public UsuarioResponseDTO buscarUsuarioPorId(Long id){
-        return UsuarioResponseDTO.fromEntity(usuarioRepository.findById(id).get());
-       }
+           return UsuarioResponseDTO.fromEntity(usuarioRepository.findById(id).orElseThrow(() -> new UsuarioNaoEncontradoException(id)));
+    }
 
 
 
 
     public UsuarioResponseDTO editarUsuario(Long id, UsuarioRequestDTO usuarioRequestDTO){
-        Usuario usuarioEditado = usuarioRepository.findById(id).get();
+        Usuario usuarioEditado = usuarioRepository.findById(id).orElseThrow(() -> new UsuarioNaoEncontradoException(id));
         usuarioEditado.setNome(usuarioRequestDTO.nome());
         usuarioEditado.setEmail(usuarioRequestDTO.email());
         usuarioEditado.setSenha(usuarioRequestDTO.senha());
         return UsuarioResponseDTO.fromEntity(usuarioRepository.save(usuarioEditado));
     }
 
-    public void apagarUsuario(Long id){
+    public void apagarUsuario(Long id) {
+        if (!usuarioRepository.existsById(id)) {
+            throw new UsuarioNaoEncontradoException(id);
+        }
         usuarioRepository.deleteById(id);
     }
-
 }

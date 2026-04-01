@@ -4,9 +4,9 @@ package com.senai.conta_bancaria.interface_ui.controller;
 import com.senai.conta_bancaria.application.dto.UsuarioResponseDTO;
 import com.senai.conta_bancaria.application.dto.UsuarioRequestDTO;
 import com.senai.conta_bancaria.application.service.UsuarioService;
-import com.senai.conta_bancaria.domain.entity.Usuario;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +22,7 @@ public class UsuarioController {
     UsuarioService usuarioService;
 
     @PostMapping
-    public ResponseEntity<UsuarioResponseDTO> cadastrarUsuario(@RequestBody UsuarioRequestDTO usuarioRequestDTO){
+    public ResponseEntity<UsuarioResponseDTO> cadastrarUsuario(@Valid @RequestBody UsuarioRequestDTO usuarioRequestDTO){
         UsuarioResponseDTO usuarioCadastrado = usuarioService.cadastrarUsuario(usuarioRequestDTO);
         return ResponseEntity.created
                 (URI.create("/usuario/" + usuarioCadastrado.id())).body(usuarioCadastrado);
@@ -39,7 +39,7 @@ public class UsuarioController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UsuarioResponseDTO> editarUsuario( @PathVariable Long id,@RequestBody UsuarioRequestDTO usuarioRequestDTO){
+    public ResponseEntity<UsuarioResponseDTO> editarUsuario( @PathVariable Long id,@Valid @RequestBody UsuarioRequestDTO usuarioRequestDTO){
         return ResponseEntity.ok(usuarioService.editarUsuario(id,usuarioRequestDTO));
     }
 
