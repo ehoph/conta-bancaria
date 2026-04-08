@@ -1,19 +1,15 @@
 package com.senai.conta_bancaria.domain.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import com.senai.conta_bancaria.domain.enums.Role;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +17,12 @@ public class Usuario {
     private String nome;
     private String email;
     private String senha;
+    private String cpf;
+    private boolean ativo = true;
+
+    @Enumerated
+    @Column(nullable = false)
+    protected Role role;
 
 
 }
