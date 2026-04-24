@@ -3,7 +3,11 @@ package com.senai.conta_bancaria.interface_ui.controller.exception;
 
 import com.senai.conta_bancaria.application.dto.ContaRequestDTO;
 import com.senai.conta_bancaria.application.dto.ContaResponseDTO;
+import com.senai.conta_bancaria.application.dto.Deposito.DepositoRequestDTO;
+import com.senai.conta_bancaria.application.dto.Saque.SaqueRequestDTO;
+import com.senai.conta_bancaria.application.dto.TransferenciaRequestDTO;
 import com.senai.conta_bancaria.application.service.ContaService;
+import com.senai.conta_bancaria.domain.entity.Conta;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -46,5 +50,22 @@ public class ContaController {
         contaService.apagarConta(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @PostMapping("/{id}/deposito")
+    public Conta depositar(@PathVariable Long id, @RequestBody DepositoRequestDTO depositoRequestDTO) {
+        return contaService.depositarConta(id, depositoRequestDTO);
+    }
+
+    @PostMapping("/{id}/saque")
+    public Conta sacar(@PathVariable Long id, @RequestBody SaqueRequestDTO saqueRequestDTO) {
+        return contaService.sacarConta(id, saqueRequestDTO);
+    }
+
+
+    @PostMapping("/transferencia")
+        public ContaResponseDTO transferencia(@RequestBody TransferenciaRequestDTO transferenciaRequestDTO){
+            return contaService.transferenciaConta(transferenciaRequestDTO);
+        }
+
 
 }
