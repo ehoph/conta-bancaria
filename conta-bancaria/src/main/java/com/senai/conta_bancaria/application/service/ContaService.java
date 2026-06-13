@@ -9,6 +9,7 @@ import com.senai.conta_bancaria.application.dto.TransferenciaResponseDTO;
 import com.senai.conta_bancaria.domain.entity.Conta;
 import com.senai.conta_bancaria.domain.exception.ContaNaoEncontradoException;
 import com.senai.conta_bancaria.domain.repository.ContaRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -65,6 +66,7 @@ public class ContaService {
         return contaRepository.save(conta);
     }
 
+    @Transactional
    public ContaResponseDTO transferenciaConta(TransferenciaRequestDTO transferenciaRequestDTO){
         Conta contaSaida = contaRepository.findByNumeroConta(transferenciaRequestDTO.ContaDestino()).get();
         Conta contaDestino = contaRepository.findByNumeroConta(transferenciaRequestDTO.ContaSaida()).get();
